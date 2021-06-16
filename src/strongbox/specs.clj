@@ -122,7 +122,10 @@
 (s/def ::selected-catalogue keyword?)
 
 (s/def :config/addon-zips-to-keep (s/nilable int?))
-(s/def :config/preferences (s/keys :req-un [:config/addon-zips-to-keep]))
+(s/def :config/automatic-update-all boolean?)
+(s/def :config/preferences (s/keys :req-un [:config/addon-zips-to-keep
+                                            :config/automatic-update-all
+                                            ]))
 
 (s/def ::user-config (s/keys :req-un [::addon-dir-list ::selected-addon-dir
                                       ::catalogue-location-list ::selected-catalogue

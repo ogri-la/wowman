@@ -192,7 +192,10 @@
                           :selected-addon-dir "/tmp/.strongbox-bar" ;; defaults to first entry
 
                           ;; new in 3.1.0
-                          :preferences {:addon-zips-to-keep nil}}
+                          :preferences {;; new in 3.1.0
+                                        :addon-zips-to-keep nil
+                                        ;; new in 4.2.0
+                                        :automatic-update-all false}}
 
                     :cli-opts {}
                     :file-opts {:debug? true
@@ -221,7 +224,10 @@
                           :selected-addon-dir "/tmp/.strongbox-bar"
 
                           ;; new in 3.1.0
-                          :preferences {:addon-zips-to-keep nil}}
+                          :preferences {;; new in 3.1.0
+                                        :addon-zips-to-keep nil
+                                        ;; new in 4.2.0
+                                        :automatic-update-all false}}
 
                     :cli-opts {}
                     :file-opts {:selected-catalogue :full
@@ -251,13 +257,15 @@
                           :selected-addon-dir "/tmp/.strongbox-bar"
 
                           ;; new in 3.1.0
-                          :preferences {:addon-zips-to-keep nil}}
+                          :preferences {;; new in 3.1.0
+                                        :addon-zips-to-keep nil
+                                        ;; new in 4.2.0
+                                        :automatic-update-all false}}
 
                     :cli-opts {}
                     :file-opts {:gui-theme :dark
                                 :selected-catalogue :full
                                 :debug? true
-                                ;; todo: shouldn't these have `:strict?` in them?
                                 :addon-dir-list [{:addon-dir "/tmp/.strongbox-bar", :game-track :retail}
                                                  {:addon-dir "/tmp/.strongbox-foo", :game-track :classic}]}
                     :etag-db {}}]
@@ -282,7 +290,10 @@
                           :selected-addon-dir "/tmp/.strongbox-bar"
 
                           ;; new in 3.1.0
-                          :preferences {:addon-zips-to-keep nil}}
+                          :preferences {;; new in 3.1.0
+                                        :addon-zips-to-keep nil
+                                        ;; new in 4.2.0
+                                        :automatic-update-all false}}
 
                     :cli-opts {}
                     :file-opts {:gui-theme :dark
@@ -312,7 +323,10 @@
                           :selected-addon-dir "/tmp/.strongbox-foo"
 
                           ;; new in 3.1.0
-                          :preferences {:addon-zips-to-keep nil}}
+                          :preferences {;; new in 3.1.0
+                                        :addon-zips-to-keep nil
+                                        ;; new in 4.2.0
+                                        :automatic-update-all false}}
 
                     :cli-opts {}
                     :file-opts {:gui-theme :dark
@@ -320,10 +334,7 @@
                                 :addon-dir-list [{:addon-dir "/tmp/.strongbox-bar", :game-track :retail}
                                                  {:addon-dir "/tmp/.strongbox-foo", :game-track :classic}]
                                 :selected-addon-dir "/tmp/.strongbox-foo"
-
-                                ;; new in 1.0
                                 :catalogue-location-list (:catalogue-location-list config/default-cfg)}
-
                     :etag-db {}}]
       (is (= expected (config/load-settings cli-opts cfg-file etag-db-file))))))
 
@@ -348,7 +359,10 @@
                           :selected-addon-dir "/tmp/.strongbox-foo"
 
                           ;; new in 3.1.0
-                          :preferences {:addon-zips-to-keep 3}}
+                          :preferences {;; new in 3.1.0
+                                        :addon-zips-to-keep 3
+                                        ;; new in 4.2.0
+                                        :automatic-update-all false}}
 
                     :cli-opts {}
                     :file-opts {:gui-theme :dark
@@ -356,8 +370,6 @@
                                 :addon-dir-list [{:addon-dir "/tmp/.strongbox-bar", :game-track :retail-classic}
                                                  {:addon-dir "/tmp/.strongbox-foo", :game-track :classic}]
                                 :selected-addon-dir "/tmp/.strongbox-foo"
-
-                                ;; new in 1.0
                                 :catalogue-location-list (:catalogue-location-list config/default-cfg)
 
                                 :preferences {:addon-zips-to-keep 3}}
@@ -386,7 +398,10 @@
                           :selected-addon-dir "/tmp/.strongbox-foo"
 
                           ;; new in 3.1.0
-                          :preferences {:addon-zips-to-keep 3}}
+                          :preferences {;; new in 3.1.0
+                                        :addon-zips-to-keep 3
+                                        ;; new in 4.2.0
+                                        :automatic-update-all false}}
 
                     :cli-opts {}
                     :file-opts {:gui-theme :dark-green
@@ -394,12 +409,8 @@
                                 :addon-dir-list [{:addon-dir "/tmp/.strongbox-bar", :game-track :retail-classic}
                                                  {:addon-dir "/tmp/.strongbox-foo", :game-track :classic}]
                                 :selected-addon-dir "/tmp/.strongbox-foo"
-
-                                ;; new in 1.0
                                 :catalogue-location-list (:catalogue-location-list config/default-cfg)
-
                                 :preferences {:addon-zips-to-keep 3}}
-
                     :etag-db {}}]
       (is (= expected (config/load-settings cli-opts cfg-file etag-db-file))))))
 
@@ -423,7 +434,10 @@
                           :selected-addon-dir "/tmp/.strongbox-foo"
 
                           ;; new in 3.1.0
-                          :preferences {:addon-zips-to-keep 3}}
+                          :preferences {;; new in 3.1.0
+                                        :addon-zips-to-keep 3
+                                        ;; new in 4.2.0
+                                        :automatic-update-all false}}
 
                     :cli-opts {}
                     :file-opts {:gui-theme :dark-green
@@ -431,11 +445,46 @@
                                 :addon-dir-list [{:addon-dir "/tmp/.strongbox-bar", :game-track :classic-tbc, :strict? true}
                                                  {:addon-dir "/tmp/.strongbox-foo", :game-track :retail, :strict? false}]
                                 :selected-addon-dir "/tmp/.strongbox-foo"
+                                :catalogue-location-list (:catalogue-location-list config/default-cfg)
+                                :preferences {:addon-zips-to-keep 3}}
+                    :etag-db {}}]
+      (is (= expected (config/load-settings cli-opts cfg-file etag-db-file))))))
 
-                                ;; new in 1.0
+(deftest load-settings-4.2
+  (testing "a standard config file circa 4.2 is loaded and parsed as expected"
+    (let [cli-opts {}
+          cfg-file (fixture-path "user-config-4.2.json")
+          etag-db-file (fixture-path "empty-map.json")
+
+          expected {:cfg {:gui-theme :dark-green ;; new in 0.11, `:dark-green` new in 3.2.0
+                          :selected-catalogue :full ;; new in 0.10
+                          ;;:debug? true ;; removed in 0.12
+                          :addon-dir-list [{:addon-dir "/tmp/.strongbox-bar", :game-track :classic-tbc :strict? true} ;; `:classic-tbc` and `:strict?` added in 4.1
+                                           {:addon-dir "/tmp/.strongbox-foo", :game-track :retail :strict? false}]
+
+                          ;; new in 1.0
+                          :catalogue-location-list (:catalogue-location-list config/default-cfg)
+
+                          ;; new in 0.12
+                          ;; moved to :cfg in 1.0
+                          :selected-addon-dir "/tmp/.strongbox-foo"
+
+                          ;; new in 3.1.0
+                          :preferences {;; new in 3.1.0
+                                        :addon-zips-to-keep 3
+                                        ;; new in 4.2.0
+                                        :automatic-update-all true}}
+
+                    :cli-opts {}
+                    :file-opts {:gui-theme :dark-green
+                                :selected-catalogue :full
+                                :addon-dir-list [{:addon-dir "/tmp/.strongbox-bar", :game-track :classic-tbc, :strict? true}
+                                                 {:addon-dir "/tmp/.strongbox-foo", :game-track :retail, :strict? false}]
+                                :selected-addon-dir "/tmp/.strongbox-foo"
                                 :catalogue-location-list (:catalogue-location-list config/default-cfg)
 
-                                :preferences {:addon-zips-to-keep 3}}
+                                :preferences {:addon-zips-to-keep 3
+                                              :automatic-update-all true}}
 
                     :etag-db {}}]
       (is (= expected (config/load-settings cli-opts cfg-file etag-db-file))))))

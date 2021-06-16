@@ -1,0 +1,49 @@
+{
+  "gui-theme": "dark-green",
+  "addon-dir-list": [
+    {
+      "addon-dir": "/tmp/.strongbox-bar",
+      "game-track": "classic-tbc",
+      "strict?": true
+    },
+    {
+      "addon-dir": "/tmp/.strongbox-foo",
+      "game-track": "retail",
+      "strict?": false
+    }
+  ],
+  "selected-addon-dir": "/tmp/.strongbox-foo",
+  "catalogue-location-list": [
+    {
+      "name": "short",
+      "label": "Short (default)",
+      "source": "https://raw.githubusercontent.com/ogri-la/strongbox-catalogue/master/short-catalogue.json"
+    },
+    {
+      "name": "full",
+      "label": "Full",
+      "source": "https://raw.githubusercontent.com/ogri-la/strongbox-catalogue/master/full-catalogue.json"
+    },
+    {
+      "name": "tukui",
+      "label": "Tukui",
+      "source": "https://raw.githubusercontent.com/ogri-la/strongbox-catalogue/master/tukui-catalogue.json"
+    },
+    {
+      "name": "curseforge",
+      "label": "Curseforge",
+      "source": "https://raw.githubusercontent.com/ogri-la/strongbox-catalogue/master/curseforge-catalogue.json"
+    },
+    {
+      "name": "wowinterface",
+      "label": "WoWInterface",
+      "source": "https://raw.githubusercontent.com/ogri-la/strongbox-catalogue/master/wowinterface-catalogue.json"
+    }
+  ],
+  "selected-catalogue": "full",
+  "preferences":
+  {
+      "addon-zips-to-keep": 3,
+      "automatic-update-all": true
+  }
+}

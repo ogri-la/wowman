@@ -1069,10 +1069,19 @@
         selected? (not (nil? num-addon-zips-to-keep)) ;; `nil` is 'keep all zips', see `config.clj`
         ]
     {:fx/type :check-menu-item
-     :text "Remove addon zip after installation (global)"
+     :text "Remove addon zip after installation" ;; (global)" 
      :selected selected?
      :on-action (fn [ev]
                   (cli/set-preference :addon-zips-to-keep (if (.isSelected (.getSource ev)) 0 nil)))}))
+
+(defn menu-item--automatic-update-all
+  [{:keys [fx/context]}]
+  (let [selected? (fx/sub-val context get-in [:app-state :cfg :preferences :automatic-update-all])]
+    {:fx/type :check-menu-item
+     :text "Update addons immediately"
+     :selected selected?
+     :on-action (fn [ev]
+                  (cli/set-preference :automatic-update-all (.isSelected (.getSource ev))))}))
 
 (defn menu-bar
   "returns a description of the menu at the top of the application"
@@ -1099,7 +1108,9 @@
                    separator
                    (menu-item "E_xit" exit-handler {:key "Ctrl+Q"})]
 
-        prefs-menu [{:fx/type menu-item--num-zips-to-keep}]
+        prefs-menu [{:fx/type menu-item--num-zips-to-keep}
+                    {:fx/type menu-item--automatic-update-all}
+                    ]
 
         view-menu (into
                    [(menu-item "Refresh" (async-handler cli/hard-refresh) {:key "F5"})

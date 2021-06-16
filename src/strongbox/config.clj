@@ -30,7 +30,11 @@
                  ;; 0:   keep no zips
                  ;; 1:   keep 1 zip
                  ;; N:   keep N zips
-                 :addon-zips-to-keep nil}})
+                 :addon-zips-to-keep nil
+                 ;; true:  begin updating addons immediately
+                 ;; false: user must hit 'update all' button
+                 :automatic-update-all false
+                 }})
 
 (defn handle-install-dir
   "`:install-dir` was once supported in the user configuration but is now only supported in the command line options.
@@ -126,19 +130,30 @@
                     :catalogue-location-list :selected-catalogue
                     :preferences]))
 
+;; https://dnaeon.github.io/recursively-merging-maps-in-clojure/
+(defn deep-merge
+  "Recursively merges maps."
+  [& maps]
+  (letfn [(m [& xs]
+            (if (some #(and (map? %) (not (record? %))) xs)
+              (apply merge-with m xs)
+              (last xs)))]
+    (reduce m maps)))
+
 (defn-spec -merge-with ::sp/user-config
   "merges `cfg-b` over `cfg-a`, returning the result if valid else `cfg-a`"
   [cfg-a map?, cfg-b map?, msg string?]
   (debug "loading config:" msg)
   (let [cfg (-> cfg-a
-                (merge cfg-b)
+                ;;(merge cfg-b)
+                (deep-merge cfg-b)
                 handle-install-dir
                 handle-compound-game-tracks
                 remove-invalid-addon-dirs
                 handle-selected-addon-dir
                 remove-invalid-catalogue-location-entries
                 strip-unspecced-keys)
-        message (format "configuration from %s is invalid and will be ignored: %s"
+        message (format "configuration from '%s' is invalid and will be ignored: %s"
                         msg (s/explain-str ::sp/user-config cfg))]
     (if (s/valid? ::sp/user-config cfg)
       cfg
